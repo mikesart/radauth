@@ -81,7 +81,7 @@ sudo xargs kill -HUP < /var/packages/RadiusServer/target/var/run/radiusd/radiusd
 /volume1/@appstore/RadiusServer/etc/raddb
 /volume1/@appstore/RadiusServer/etc/raddb/modules
 ```
-* test radius server from PC
+* test radius server from PC (radclient in freeradius-utils package)
 ```
 echo "User-Name=mikesart,User-Password=password123456" | ./radclient -s 10.10.10.61 auth supersecret
 ```
