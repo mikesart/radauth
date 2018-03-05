@@ -34,14 +34,13 @@
 ```
 * update apparmor profile to allow running our radauth script
 ```
-/etc/apparmor.d/pkg_RadiusServer
+/var/packages/RadiusServer/target/apparmor/pkg_RadiusServer
 
         ...
-        /usr/local/etc/certificate/RadiusServer/radiusd/*               r,
+        /usr/local/etc/certificate/RadiusServer/radiusd/*               r, <-- existing line
 
         # radauth.sh
-        /root/radauth/       rwkl,
-        /root/radauth/**     rwkmixl,
+        /root/radauth/**     rwkmix,
         /usr/bin/python2.7   rix,
         /usr/lib/**          mr,
         /etc/passwd          r,
