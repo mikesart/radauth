@@ -32,8 +32,8 @@
         exec_radauth
         # comment out other entries
 ```
-* update apparmor profile to allow running our radauth script
-(linked from /etc/apparmor.d/pkg_RadiusServer)
+* update apparmor profile to allow running our radauth script  
+  (linked from /etc/apparmor.d/pkg_RadiusServer)
 ```
 /var/packages/RadiusServer/target/apparmor/pkg_RadiusServer
 
@@ -113,6 +113,7 @@ apparmor_parser -C -r /etc/apparmor.d/pkg_RadiusServer
       l    - link
       k    - lock
 ```
+* Globbing / Access Modes: http://manpages.ubuntu.com/manpages/artful/man5/apparmor.d.5.html
 
 ### Links ###
 * Remote Access to EdgeMAX GUI?  
