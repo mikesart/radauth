@@ -33,6 +33,7 @@
         # comment out other entries
 ```
 * update apparmor profile to allow running our radauth script
+(linked from /etc/apparmor.d/pkg_RadiusServer)
 ```
 /var/packages/RadiusServer/target/apparmor/pkg_RadiusServer
 
