@@ -186,7 +186,20 @@ add system image https://dl.ubnt.com/firmwares/edgemax/v1.10.x/ER-e50.v1.10.0-be
 add system image blah.tar
 set system image default-boot
 delete system image
+
+; clear log file
+sudo rm /var/log/messages 
+sudo service rsyslog restart
+
+; show log
+show log
+
+; restarts all IPsec tunnels on all peers
+restart vpn
 ```
+
+; There ARE bugs with the VTI implementation. They're mainly related to dead-peer-detection and graceful reconnection. I was able to work-around this with a CRON script to check if the tunnel was down and give it a kick  
+https://www.reddit.com/r/networking/comments/4gid44/can_i_trust_an_edgerouter_for_ipsec/
 
 ```
 ; Step 3: Enable Performance Features
