@@ -34,6 +34,7 @@
 ```
 * update apparmor profile to allow running our radauth script  
   (linked from /etc/apparmor.d/pkg_RadiusServer)
+  start/stop script: /usr/syno/etc/rc.sysv/apparmor.sh
 ```
 rm /var/packages/RadiusServer/target/apparmor/parsedAppArmorProfile
 vi /var/packages/RadiusServer/target/apparmor/pkg_RadiusServer
