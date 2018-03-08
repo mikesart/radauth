@@ -35,18 +35,44 @@
 * update apparmor profile to allow running our radauth script  
   (linked from /etc/apparmor.d/pkg_RadiusServer)
 ```
-/var/packages/RadiusServer/target/apparmor/pkg_RadiusServer
+rm /var/packages/RadiusServer/target/apparmor/parsedAppArmorProfile
+vi /var/packages/RadiusServer/target/apparmor/pkg_RadiusServer
 
-        ...
-        /usr/local/etc/certificate/RadiusServer/radiusd/*               r, <-- existing line
+/volume*/@appstore/RadiusServer/sbin/radiusd flags=(complain) {
+    #include<abstractions/base>                                          
+    #include<abstractions/nameservice>                                          
+    #include<abstractions/authentication>
+    #include<abstractions/libsynoldap>
+    #include<abstractions/openssl>
+    
+    capability net_bind_service,
+    capability dac_override,
 
-        # radauth.sh
-        /root/radauth/**     rwkmix,
-        /usr/bin/python2.7   rix,
-        /usr/lib/**          mr,
-        /etc/passwd          r,
-        /usr/syno/etc/preference/*/google_authenticator r,
-    }
+    /volume*/@appstore/RadiusServer/sbin/radiusd                    r,  # the file itself
+    /volume*/@appstore/RadiusServer/var/run/radiusd/radiusd.pid     rwk,
+    /dev/crypto                                                     rw,
+    /etc/shells                                                     r,
+    
+    # common
+        /volume*/@appstore/RadiusServer/tools/ntlm_auth.sh                              rwix,
+    /volume*/@appstore/RadiusServer/etc/raddb/**                    r,
+    /volume*/@appstore/RadiusServer/lib/*                           rm,
+    /volume*/@appstore/RadiusServer/share/freeradius/dictionary*    r,
+    /volume*/@appstore/RadiusServer/var/log/radius/radius.log*      rwk,
+    /volume*/@appstore/RadiusServer/var/run/radiusd/radiusd.sock    rwk,
+    /usr/local/synoradius/*                                         rwk,
+    /etc/samba/private/smbpasswd                                                                        r,
+        /etc/samba/smb.share.conf                                                                               r,
+    /etc/samba/smb.reserved.conf                                    r,
+    /usr/local/etc/certificate/RadiusServer/radiusd/*               r,
+
+    # radauth.sh
+    /root/radauth/{,**}  mrwkix,
+    /usr/bin/python2.7   rix,
+    /usr/lib/{,**}       mr,
+    /etc/passwd          r,
+    /usr/syno/etc/preference/*/google_authenticator r,
+}
 ```
 * reload above config changes
 ```
