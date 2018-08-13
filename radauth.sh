@@ -16,6 +16,7 @@ import mppe
 import radauth_totp
 
 LOG_FILENAME = os.path.dirname(os.path.realpath(__file__)) + '/radauth.log'
+PASSWDS_FILENAME = os.path.dirname(os.path.realpath(__file__)) + '/radauthpw.txt'
 
 # cat /usr/syno/etc/preference/mikesart/google_authenticator
 #  P34LSF5MU24VNI2B
@@ -75,14 +76,12 @@ class Input:
             self.ms_chap2_response = re.sub('^0x', '', self.ms_chap2_response)
             self.ms_chap_challenge = re.sub('^0x', '', self.ms_chap_challenge)
 
-        # "man 5 passwd" field 4: user name or comment field
-        with open("/etc/passwd", 'r') as f:
-            for line in f:
-                line = line.strip()
-                fields = line.split(":")
-                if fields[0] == self.name:
-                    self.etc_passwd = fields[4].rstrip(',');
-                    break
+        # Read radauthpw.txt file for username -> password values
+        user_passwds = {}
+        with open(PASSWDS_FILENAME, 'r') as f:
+            s = f.read()
+            user_passwds = eval( s )
+        self.etc_passwd = user_passwds.get( self.name, 'nopassword' )
 
         # Get full path to user's google_authenticator file
         if not debug_google_auth_file:
